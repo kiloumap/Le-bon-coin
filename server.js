@@ -5,11 +5,12 @@ var app            = express();
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 const config       = require('config'); // load db location to split test and dev database
+const mongoose      = require('mongoose');
 
 // configuration ===========================================
 
 // config files
-var db = require('./config/data');
+var db = require('./config/db');
 
 // set our port
 var port          = 8080;
