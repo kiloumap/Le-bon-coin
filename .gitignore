@@ -59,3 +59,6 @@ typings/
 
 # .idea from ide
 .idea
+
+# don't migrate database
+data
