@@ -26,3 +26,13 @@
     - bower.json <!-- tells bower which files we need -->
     - package.json <!-- tells npm which packages we need -->
     - server.js <!-- set up our node application -->
+
+
+Mongodb :
+Run server => Mongod mongod --storageEngine wiredTiger --dbpath data/db
+Repair server => MongodRepair mongod --storageEngine wiredTiger --dbpath data/db --repair
+
+Quand le server est lancé, on accède au client avec mongo
+
+Base de donnée => leboncoin
+
