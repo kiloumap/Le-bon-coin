@@ -1,49 +1,90 @@
 "use strict";
-// modules =================================================
-var express        = require('express');
-var app            = express();
-var bodyParser     = require('body-parser');
-var methodOverride = require('method-override');
-//const config       = require('config'); // load db location to split test and dev database
-const mongoose     = require('mongoose');
+// ******************* modules *******************
+const express           = require('express');
+const bodyParser        = require('body-parser');
+const methodOverride    = require('method-override');
+const morgan            = require('morgan');
+const config            = require('./config/config');   // load db location to split test and dev database
+const mongoose          = require('mongoose');
+const cors              = require('cors');              // cross-origin resource sharing
 
-// configuration ===========================================
 
-// config files
-var db = require('./config/db');
+// ******************* routes *******************
+const users             = require('./app/routes/Users');
 
-// set our port
-var port          = 8080;
+const app               = express();
 
-// connect to our mongoDB database
-// (uncomment after you enter in your own credentials in config/dev.js)
-// mongoose.connect(db.url);
+// Create a server for socket.io.
+const server = require('http').Server(app);
+const io     = require('socket.io')(server);
 
-// get all config/stuff of the body (POST) parameters
-// parse application/json
-app.use(bodyParser.json());
 
-// parse application/vnd.api+json as json
+// ******************* configuration *******************
+// Connection to mongodb.
+mongoose.connect(config.DBHost, { useMongoClient: true }, (err) => {
+    if (err) throw err;
+});
+app.set('secretCode', config.secret);
+mongoose.Promise = global.Promise;
+
+
+
+// ******************* middlewares *******************
+app.use(cors());
+app.use(morgan('dev'));
+app.use(bodyParser.json({ limit: '5mb' }));
+
+// ******************* routes *******************
+// TODO link to generate doc
+app.use('/', function(req, res) {
+    res.send('Hello! The API is at http://localhost:' + port + '/api');
+});
+app.use('/api/users', users);
+
+
+// Catch 404 Errors and forward them to error handler.
+app.use((req, res, next) => {
+    const err  = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// Error handler functions.
+app.use((err, req, res, next) => {
+    const error  = app.get('env') === 'development' ? err : {};
+    const status = err.status || 500;
+
+    // Respond to client.
+    res.status(status)
+        .json({
+            error: {
+                message: error.message
+            }
+        });
+
+    // Respond to ourselves.
+    console.error(err);
+});
+
+// Start the server.
+server.listen(helperView.port,
+    () => console.log(`Server is listening on port ${helperView.port}`));
+
+// Allow to use io in controllers files.
+global.io = io;
+
+// parse application/vnd.api+json as json.
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+// override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT.
 app.use(methodOverride('X-HTTP-Method-Override'));
 
-// set the static files location /public/img will be /img for users
+// set the static files location /public/img will be /img for users.
 app.use(express.static(__dirname + '/public'));
 
-// routes ==================================================
-require('./app/routes')(app); // configure our routes
+console.log('server running at ' + port);
 
-// start app ===============================================
-// startup our app at http://localhost:8080
-app.listen(port);
-
-// shoutout to the user
-console.log('Magic happens on port ' + port);
-
-// expose app
 exports = module.exports = app;

@@ -1,15 +1,16 @@
-Category (Title, )
+Category: Title, SubCategory[]
 
-SubCategory
+SubCategory: Title, Articles[]
 
-Articles
+Articles: Title, Description, Type(Offre/Demande), User_id, First_image(base64), Price, Localisation, Date_create, Date_update, Images[], Fields[]
 
-Users
+Images: Image(base64), Date
 
-Shop
+Fields: Title, Value
+
+Users: Name, Login, Password, Admin, Type(pro/part)
 
 Chat
-
 
 # Le bon coin
 
