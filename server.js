@@ -7,7 +7,7 @@ const morgan            = require('morgan');
 const config            = require('./config/config');   // load db location to split test and dev database
 const mongoose          = require('mongoose');
 const cors              = require('cors');              // cross-origin resource sharing
-
+const helperView        = require('./app/helpers/view');
 
 // ******************* routes *******************
 const users             = require('./app/routes/Users');
@@ -21,11 +21,11 @@ const io     = require('socket.io')(server);
 
 // ******************* configuration *******************
 // Connection to mongodb.
-mongoose.connect(config.DBHost, { useMongoClient: true }, (err) => {
+mongoose.connect(config.database, (err) => {
     if (err) throw err;
 });
-app.set('secretCode', config.secret);
 mongoose.Promise = global.Promise;
+app.set('secretCode', config.secret);
 
 
 
@@ -36,11 +36,7 @@ app.use(bodyParser.json({ limit: '5mb' }));
 
 // ******************* routes *******************
 // TODO link to generate doc
-app.use('/', function(req, res) {
-    res.send('Hello! The API is at http://localhost:' + port + '/api');
-});
-app.use('/api/users', users);
-
+app.use('/api/users/', users);
 
 // Catch 404 Errors and forward them to error handler.
 app.use((req, res, next) => {
@@ -84,7 +80,5 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 
 // set the static files location /public/img will be /img for users.
 app.use(express.static(__dirname + '/public'));
-
-console.log('server running at ' + port);
 
 exports = module.exports = app;

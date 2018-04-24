@@ -7,6 +7,7 @@
   "repository": "https://github.com/kiloumap/Le-bon-coin",
   "description": "Site de petite annonce",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "~1.18.2",
     "chai": "^4.1.2",
     "config": "^1.30.0",

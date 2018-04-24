@@ -104,7 +104,7 @@ const idSchema = Joi.object().keys({
 const userSchema    = Joi.object().keys({
     name            : Joi.string().required(),
     email           : Joi.string().email().required(),
-    password        : Joi.regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+    password        : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     isAdmin         : Joi.bool().required(),
     type            : Joi.bool().required(),
     access_token    : [Joi.string(), Joi.number()]
@@ -118,7 +118,7 @@ const userSchema    = Joi.object().keys({
 const partialUserSchema = Joi.object().keys({
     name            : Joi.string().required(),
     email           : Joi.string().email().required(),
-    password        : Joi.regex(/^[a-zA-Z0-9]{3,30}$/).required(),
+    password        : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     isAdmin         : Joi.bool().required(),
     type            : Joi.bool().required(),
     access_token    : ''

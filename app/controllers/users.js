@@ -1,131 +1,93 @@
 'use strict';
 
-import * as jwt from "jsonwebtoken";
-
-const Pizza = require('../models/Users');
+const jwt               = require("jsonwebtoken");
+const bcrypt            = require('bcryptjs');
+const User              = require('../models/Users');
+const config            = require("../../config/config");
 
 
 /**
  * Users's controller.
  * @namespace UsersController
  */
-// TODO check commentary
+// TODO check doc generate
 /**
  * Find all Users responding to the query or one by his id.
  *
- * @function find
+ * @function register
  * @memberof UsersController
  * @param {Object} req - Request object.
- * @param {string} req.params.id - Pizza's ID to find.
- * @param {string} req.query.name - Pizza's name to query.
- * @param {string} req.query.description - Pizza's description to query.
- * @param {string} req.query.price - Pizza's price to query.
- * @param {string} req.query.image - Pizza's image to query.
+ * @param {string} req.params.id - User's ID to sign.
+ * @param {string} req.query.name - User's name to query.
+ * @param {string} req.query.email - User's email to query.
+ * @param {string} req.query.password - User's password to query.
+ * @param {string} req.query.isAdmin - User's admin to query.
+ * @param {string} req.query.type - User's type to query.
  * @param {Object} res - Response object.
- * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ * @returns {Object} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
-async function find(req, res) {
-    if (err) throw err;
+const register = (req, res) =>{
+    //if(req.body){
+        const hashedPassword = bcrypt.hashSync(req.body.password, 8);
+        const isAdmin = !!(req.body.isAdmin);
 
-    const name = req.value
-        ? (req.value.params
-            ? req.value.params.id
-            : null)
-        : null;
+        let user = ({
+            name : req.body.name,
+            email : req.body.email,
+            password : hashedPassword,
+            isAdmin: isAdmin,
+            type: req.body.name
+        });
 
-    let request;
+        const token = jwt.sign(user, config.secret, { // TODO config.secret to dev / test
+            expiresIn: 86400 // expires in 24 hours
+        });
 
-    if (!name) {
-        request = req.value.query;
-        for (let properties in request) {
-            request[properties] = new RegExp(`^.*${request[properties]}.*$`, 'i');
-        }
-    }
+        user.push({token: token});
 
-    const ret = name
-        ? await User.findById(id).populate('ingredients')
-        : await User.find(!id ? request : {}).populate('ingredients');
+        User.create(user);
 
-    if (ret) {
-        res.status(200).json(ret);
-    } else {
+        res.status(200).send({auth: true, token: token});
+        /*
+        User.create({
+            name : req.body.name,
+            email : req.body.email,
+            password : hashedPassword,
+            isAdmin: isAdmin,
+            type: req.body.name
+        },
+
+        function (err, user) {
+            if (err) return res.status(500).send("There was a problem registering the user.");
+            // create a token
+            const token = jwt.sign(user, config.secret, { // TODO config.secret to dev / test
+                expiresIn: 86400 // expires in 24 hours
+            });
+            res.status(200).send({ auth: true, token: token });
+        });*/
+    //}else
+        //res.status(204).end();
+};
+
+const login = (req, res) => {
+    if(req.body){
+        User.findOne({ email: req.body.email }, function (err, user) {
+            if (err) return res.status(500).send('Error on the server.');
+            if (!user) return res.status(404).send('No user found.');
+            const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+            if (!passwordIsValid) return res.status(401).send({ auth: false, token: null, message: 'Failed to authenticate token.' });
+            const token = jwt.sign({ id: user._id }, config.secret, {
+                expiresIn: 86400 // expires in 24 hours
+            });
+            res.status(200).send({ auth: true, token: token });
+        });
+    }else
         res.status(204).end();
-    }
-}
+};
 
-async function findOne(req, res) {
-    if (err) throw err;
-    let HasToken = false;
-        if (req.value.token())
-            HasToken = checkToken(req.value.token);
-
-        const ret = (HasToken) ? await User.findBy
-
-    i
-}
-
-// find the user
-User.findOne({
-    name: req.body.name
-}, function(err, user) {
-
-
-    if (!user) {
-        res.json({ success: false, message: 'Authentication failed. User not found.' });
-    } else if (user) {
-
-        // check if password matches
-        if (user.password !== req.body.password) {
-            res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-        } else {
-
-            // if user is found and password is right
-            // create a token with only our given payload
-            // we don't want to pass in the entire user since that has the password
-            const payload = {
-                isAdmin: user.isAdmin
-            };
-            var token = jwt.sign(payload, app.get('secretCode'), {
-                expiresIn: 1440 // expires in 24 hours
-            });
-
-            // return the information including token as JSON
-            res.json({
-                success: true,
-                token: token
-            });
-        }
-
-    }
-});
-
-
-
-const checkToken = (req, res, next) => {
-    // check header or url parameters or post parameters for token
-    const token = req.body.token || req.query.token || req.headers['x-access-token'];
-
-    // decode token
-    if (token) {
-        // verifies secret and checks exp
-        jwt.verify(token, app.get('secretCode'), function(err, decoded) {
-            if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
-            } else {
-                // if everything is good, save to request for use in other routes
-                req.decoded = decoded;
-                next();
-            }
-        });
-
-    } else {
-
-        // if there is no token
-        // return an error
-        return res.status(403).send({
-            success: false,
-            message: 'No token provided.'
-        });
-
-    }
+module.exports = {
+    register,
+    login,
+    //update,
+    //remove
 };
