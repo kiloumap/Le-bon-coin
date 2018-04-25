@@ -1,31 +1,20 @@
 'use strict';
-
-const router                = require('express-promise-router')();
+// TODO DOC
 const UserController        = require('../controllers/users');
-const express               = require("express");
-
-const {
-    validateParam,
-    validateBody,
-    validateQuery,
-    schemas
-} = require('../helpers/validator');
-
-// TODO validators
-// route to authenticate a user (POST http://localhost:8080/api/register)
-router.route('/register')
-    .post(UserController.register);
-
-// route to authenticate a user (POST http://localhost:8080/api/login)
-router.route('/login')
-    .post(UserController.login);
-
-// API ROUTES -------------------
+const express               = require('express');
 
 // get an instance of the router for api routes
-let apiRoutes = express.Router;
+const apiRouter             = express.Router();
 
-// apply the routes to our application with the prefix /api
-router.use('/api', apiRoutes);
+// TODO validators
+// route to authenticate a user (POST http://localhost:3000/api/register)
+apiRouter.post('/register', UserController.create);
 
-module.exports = apiRoutes;
+// route to authenticate a user (POST http://localhost:3000/api/login)
+apiRouter.post('/login', UserController.find);
+
+// route to modify an user (PATCH http://localhost:3000/api/edit)
+apiRouter.patch('/edit', UserController.update);
+
+apiRouter.delete('/delete', UserController.remove);
+module.exports = apiRouter;

@@ -8,9 +8,11 @@ const config            = require('./config/config');   // load db location to s
 const mongoose          = require('mongoose');
 const cors              = require('cors');              // cross-origin resource sharing
 const helperView        = require('./app/helpers/view');
+const cookieSession     = require('cookie-session');
+const cookieParser      = require('cookie-parser');
 
 // ******************* routes *******************
-const users             = require('./app/routes/Users');
+const indexRouter       = require('./app/routes/index');
 
 const app               = express();
 
@@ -18,7 +20,7 @@ const app               = express();
 const server = require('http').Server(app);
 const io     = require('socket.io')(server);
 
-
+// TODO check doc generate
 // ******************* configuration *******************
 // Connection to mongodb.
 mongoose.connect(config.database, (err) => {
@@ -34,9 +36,22 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json({ limit: '5mb' }));
 
+// ******************* cookies *******************
+app.use(cookieParser(config.secret));
+app.use(cookieSession({
+    name: 'jwt',
+    keys: [config.secret],
+    cookie: {
+        httpOnly: true,
+        expires: 86400,
+        signed: true
+    },
+    maxAge: 86400 // 24 hours
+}));
+
 // ******************* routes *******************
 // TODO link to generate doc
-app.use('/api/users/', users);
+app.use('/api', indexRouter);
 
 // Catch 404 Errors and forward them to error handler.
 app.use((req, res, next) => {
@@ -46,10 +61,9 @@ app.use((req, res, next) => {
 });
 
 // Error handler functions.
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
     const error  = app.get('env') === 'development' ? err : {};
     const status = err.status || 500;
-
     // Respond to client.
     res.status(status)
         .json({
@@ -81,4 +95,4 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 // set the static files location /public/img will be /img for users.
 app.use(express.static(__dirname + '/public'));
 
-exports = module.exports = app;
+module.exports = app;

@@ -16,20 +16,21 @@ const Schema   = mongoose.Schema;
  * @property {string} password.required - This property is required.
  * @property {boolean} isAdmin - is an admin ?.
  * @property {boolean} isAdmin.required - This property is required.
- * @property {boolean} type - User's type, 1 ? pro : particular.
- * @property {boolean} type.required - This property is required.
+ * @property {boolean} isPro - User's type, 1 ? pro : particular.
+ * @property {boolean} isPro.required - This property is default false.
  *
  */
 
 const userSchema = new Schema({
-    name       : {
+    email: {
         type    : String,
         required: true,
         unique  : true
     },
-    email: {
+    name       : {
         type    : String,
-        required: true
+        required: true,
+        unique  : false
     },
     password      : {
         type    : String,
@@ -39,9 +40,9 @@ const userSchema = new Schema({
         type    : Boolean,
         required: true
     },
-    type      : {
-        type    : String,
-        required: true
+    isPro       : {
+        type    : Boolean,
+        default : false
     },
     access_token: {
         type    : String,

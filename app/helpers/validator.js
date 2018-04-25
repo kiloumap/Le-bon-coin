@@ -124,6 +124,42 @@ const partialUserSchema = Joi.object().keys({
     access_token    : ''
 });
 
+
+/**
+ * Validation schema for a pizza.
+ *
+ * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
+ */
+const articleSchema    = Joi.object().keys({
+    title           : Joi.string().required(),
+    description     : Joi.string().required(),
+    price           : Joi.number().required(),
+    isRequest       : Joi.bool().required(),
+    first_image     : Joi.string().required(),
+    localisation    : Joi.string().required(),
+    images          : Joi.array(),
+    user            : Joi.array(),
+    field           : Joi.array()
+});
+
+/**
+ * Validation schema for a partial pizza.
+ *
+ * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
+ */
+const partialArticleSchema = Joi.object().keys({
+    title           : Joi.string().required(),
+    description     : Joi.string().required(),
+    price           : Joi.number().required(),
+    isRequest       : Joi.bool().required(),
+    first_image     : Joi.string().required(),
+    localisation    : Joi.string().required(),
+    images          : Joi.array(),
+    user            : Joi.array(),
+    field           : Joi.array()
+});
+
+
 module.exports = {
     validateParam,
     validateBody,
@@ -132,6 +168,8 @@ module.exports = {
         idSchema,
         userSchema,
         partialUserSchema,
+        articleSchema,
+        partialArticleSchema
         // TODO other helpers
     }
 };
