@@ -43,10 +43,6 @@ const userSchema = new Schema({
     isPro       : {
         type    : Boolean,
         default : false
-    },
-    access_token: {
-        type    : String,
-        required: false
     }
 }, {
     timestamps: true // createdAt and updatedAt fields.

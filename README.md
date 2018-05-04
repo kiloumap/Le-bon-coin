@@ -2,13 +2,13 @@ Category: Title, SubCategory[]
 
 SubCategory: Title, Articles[]
 
-Articles: Title, Description, Type(Offre/Demande), User_id, First_image(base64), Price, Localisation, Date_create, Date_update, Images[], Fields[]
+* Articles: Title, Description, Type(Offre/Demande), User_id, First_image(base64), Price, Localisation, Date_create, Date_update, Images[], Fields[]
 
-Images: Image(base64), Date
+* Images: Image(base64), Date
 
-Fields: Title, Value
+* Fields: Title, Value
 
-Users: Name, Login, Password, Admin, Type(pro/part)
+* Users: Name, Login, Password, Admin, Type(pro/part)
 
 Chat
 

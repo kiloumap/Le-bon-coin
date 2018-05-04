@@ -29,8 +29,6 @@ mongoose.connect(config.database, (err) => {
 mongoose.Promise = global.Promise;
 app.set('secretCode', config.secret);
 
-
-
 // ******************* middlewares *******************
 app.use(cors());
 app.use(morgan('dev'));
@@ -39,14 +37,15 @@ app.use(bodyParser.json({ limit: '5mb' }));
 // ******************* cookies *******************
 app.use(cookieParser(config.secret));
 app.use(cookieSession({
-    name: 'jwt',
+    name: 'session',
     keys: [config.secret],
     cookie: {
         httpOnly: true,
-        expires: 86400,
-        signed: true
+        signed: true,
+        secure: true,
+        maxAge: null // 24 hours
     },
-    maxAge: 86400 // 24 hours
+
 }));
 
 // ******************* routes *******************

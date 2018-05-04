@@ -1,14 +1,14 @@
 'use strict';
 // TODO DOC
 const ArticleController        = require('../controllers/articles');
-const express               = require('express');
+const express                   = require('express');
 
 const {
     validateParam,
     validateBody,
     validateQuery,
     schemas
-} = require('../helpers/router');
+} = require('../helpers/validator');
 
 
 // get an instance of the router for api routes

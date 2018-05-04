@@ -1,1 +1,1 @@
-mongod --storageEngine wiredTiger --dbpath data/db--repair
+mongod --storageEngine wiredTiger --dbpath data/db --repair

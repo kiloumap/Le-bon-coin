@@ -7,16 +7,22 @@ const Schema   = mongoose.Schema;
  * Articles's model
  *
  * @namespace ArticlesModels
- * @property {string} name - Article's name.
- * @property {string} name.required - The property is required.
- * @property {string} name.unique - The property is unique.
+ * @property {string} title - Article's name.
+ * @property {string} title.required - The property is required.
  * @property {string} description - Article's description.
  * @property {string} description.required - The property is required.
- * @property {string} price - Article's price.
- * @property {string} price.required - The property is required.
- * @property {string} image - Article's image.
- * @property {string} image.required - The property is required.
- * @property {Ingredient[]} ingredients - Article's ingredients.
+ * @property {boolean} isRequest - Article's type : true if is an offer, false if is an proposition.
+ * @property {boolean} isRequest.required - The property is required.
+ * @property {boolean} isRequest.default - The property's default is true.
+ * @property {number} price - Article's price.
+ * @property {number} price.required - The property is required.
+ * @property {string} first_image - Article's image.
+ * @property {string} first_image.required - The property is required.
+ * @property {user[]} user - Article's author.
+ * @property {User[]} user.required - The property is required.
+ * @property {images[]} images - Article's images.
+ * @property {fields[]} fields - Article's fields.
+ *
  */
 
 const articleSchema = new Schema({
@@ -35,7 +41,7 @@ const articleSchema = new Schema({
         default : true
     },
     price       : {
-        type    : String,
+        type    : Number,
         required: true
     },
     first_image : {
@@ -46,19 +52,20 @@ const articleSchema = new Schema({
         type    : String,
         required: true
     },
-    User: [
+    user: [
         {
-            type    : Schema.Types.ObjectId,
-            ref     : 'user'
+            type: Schema.Types.ObjectId,
+            ref : 'user',
+            required: true
         }
     ],
-    Images: [
+    images: [
         {
             type: Schema.Types.ObjectId,
             ref : 'image'
         }
     ],
-    Fields: [
+    fields: [
         {
             type: Schema.Types.ObjectId,
             ref : 'field'
