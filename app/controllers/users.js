@@ -12,10 +12,9 @@ const config            = require("../../config/config");
  * Users's controller.
  * @namespace UsersController
  */
-// TODO create check doc generate
 /**
  *
- * Find all Users responding to the query or one by his email.
+ * Create Users with all datas to the query.
  *
  * @function create
  * @memberof UsersController
@@ -25,9 +24,9 @@ const config            = require("../../config/config");
  * @param {string} req.query.email - User's email to query.
  * @param {string} req.query.password - User's password to query.
  * @param {string} req.query.isAdmin - User's admin to query.
- * @param {string} req.query.type - User's type to query.
+ * @param {string} req.query.isPro - User's type to query.
  * @param {Object} res - Response object.
- * @returns {Object} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ * @returns {Object} return res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
 const create = (req, res) => {
     if(req.body){
@@ -49,37 +48,45 @@ const create = (req, res) => {
                         return res.status(500).send("There was a problem registering the user.");
                 }
                 const token = setToken(req.body);
-                req.session = {
-                    name: "session",
-                    value: token
-                };
-                res.status(200).send({ auth: true, token: token, isAuth: true });
+                req.session = { name: "session", value: token };
+                res.status(200).send({ token: token, isAuth: true });
         });
-    }else
-        res.status(204).end();
+    }else return res.status(204).end();
 };
 
-// TODO find check doc generate
+/**
+ *
+ * Find User by his email or with his token.
+ *
+ * @function create
+ * @memberof UsersController
+ * @param {Object} req - Request object.
+ * @param {string} req.query.email - User's email to query.
+ * @param {string} req.query.token - User's token to query.
+ * @param {Object} res - Response object.
+ * @returns {Object} return res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const find = (req, res) => {
-    // If already has token, that mean a check was already did.
-    if(req.session.name === 'session') return res.status(200).send({ auth: true, token: process.env.token, isAuth: true });
-
-    // Else if hasn't token, we need to check it.
-    else if(req.body){
-        User.findOne({ email: req.body.email }, function (err, user) {
-            if (err) return res.status(500).send('Error on the server.');
-            if (!user) return res.status(404).send('No user found.');
-            const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-            if (!passwordIsValid) return res.status(401).send({ auth: false, token: null, message: 'Failed to authenticate token.' });
-            const token = setToken(user);
-            req.session = {
-                name: "session",
-                value: token
-            };
-            res.status(200).send({ auth: true, token: token, isAuth: true });
-        });
-    }else
-        res.status(204).end();
+    jwt.verify(req.session.value, config.secret,function(err,user){
+        // if err we try to create a new token if user exists.
+        if(err){
+            console.log(err);
+            if(req.body){
+                User.findOne({ email: req.body.email }, function (err, user) {
+                    if (err) return res.status(500).send('Error on the server.'); // If server has crashed
+                    if (!user) return res.status(404).send('No user found.'); // If user doesn't exist
+                    const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+                    if (!passwordIsValid) return res.status(401).send({ auth: false, message: 'Failed to authenticate token.' });
+                    req.session = {
+                        name: "session",
+                        value: setToken(user)
+                    };
+                    return res.status(200).send({ token: req.session, isAuth: true });
+                });
+            }else res.status(500).end();
+            // Else send token and auth user
+        }else return res.status(200).send({ user: user, isAuth: true });
+    });
 };
 
 // TODO update check doc generate
@@ -124,12 +131,11 @@ const remove = (req, res) => {
 };
 
 const setToken = (user) => {
-    const token = jwt.sign({ email: user.email, name: user.name, isAdmin: user.isAdmin
+    return jwt.sign({ email: user.email, name: user.name, isAdmin: user.isAdmin
     }, config.secret, {
         expiresIn: "24h", // expires in 24 hours
         algorithm: "HS384",
     });
-    return(token);
 };
 
 module.exports = {

@@ -43,8 +43,7 @@ app.use(cookieSession({
         httpOnly: true,
         signed: true,
         secure: true,
-        maxAge: null // 24 hours
-    },
+    }
 
 }));
 
