@@ -59,5 +59,6 @@ typings/
 
 # .idea from ide
 .idea/
+.idea
 
 package-lock.json
