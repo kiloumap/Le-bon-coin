@@ -1,7 +1,6 @@
 'use strict';
 
 const jwt               = require("jsonwebtoken");
-const expressJwt        = require('express-jwt');
 
 const bcrypt            = require('bcryptjs');
 const User              = require('../models/Users');
@@ -70,7 +69,6 @@ const find = (req, res) => {
     jwt.verify(req.session.value, config.secret,function(err,user){
         // if err we try to create a new token if user exists.
         if(err){
-            console.log(err);
             if(req.body){
                 User.findOne({ email: req.body.email }, function (err, user) {
                     if (err) return res.status(500).send('Error on the server.'); // If server has crashed
@@ -81,27 +79,23 @@ const find = (req, res) => {
                         name: "session",
                         value: setToken(user)
                     };
-                    return res.status(200).send({ token: req.session, isAuth: true });
+                    return res.status(200).send({ user: req.decoded, isAuth: true });
                 });
             }else res.status(500).end();
             // Else send token and auth user
-        }else return res.status(200).send({ user: user, isAuth: true });
+        }else return res.status(200).send({ user: req.decoded, isAuth: true });
     });
 };
 
 // TODO update check doc generate
 const update = (req, res) => {
-    if(req.body){
-        if(req.session.name !== 'session') return res.status(200).send('You must be logged'); //TODO redirect to login
-        const login = jwt.verify(req.session.value, config.secret);
+    if(req.body && req.decoded.email){
         const values = req.body;
-        if(values.password)
-            values.password = bcrypt.hashSync(req.body.password, 8);
-        User.findOneAndUpdate(  {email: login.email},
+        if(values.password) values.password = bcrypt.hashSync(req.body.password, 8);
+        User.findOneAndUpdate(  {email: req.decoded.email},
                                 {$set: values},
                                 { new: true },
             function (err, user){
-                console.log(user);
                 if (err) return res.status(500).send('Error on the server.');
                 if (!user) return res.status(404).send('No user found.');
                 const token = setToken(user);
@@ -117,9 +111,8 @@ const update = (req, res) => {
 
 // TODO remove check doc generate
 const remove = (req, res) => {
-    if(req.session.name !== 'session') return res.status(200).send('You must be logged'); //TODO redirect to login
-    if(req.body){
-        User.deleteOne({email: req.body.email}, function(err, user){
+    if(req.decoded.email){
+        User.deleteOne({email: req.decoded.email}, function(err, user){
             if(err) return res.status(500).send('Error on the server.');
             if(!user) return res.status(404).send('No user found.');
             if(req.session) req.session = null;
@@ -131,7 +124,7 @@ const remove = (req, res) => {
 };
 
 const setToken = (user) => {
-    return jwt.sign({ email: user.email, name: user.name, isAdmin: user.isAdmin
+    return jwt.sign({ _id: user._id, email: user.email, name: user.name, isAdmin: user.isAdmin
     }, config.secret, {
         expiresIn: "24h", // expires in 24 hours
         algorithm: "HS384",

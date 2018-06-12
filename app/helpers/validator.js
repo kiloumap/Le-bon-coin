@@ -96,8 +96,12 @@ const idSchema = Joi.object().keys({
     param: Joi.string().regex(/^[0-9a-fA-F]{24}$/).required()
 });
 
+const emailSchema = Joi.object().keys({
+    param: Joi.string().email().required()
+});
+
 /**
- * Validation schema for a pizza.
+ * Validation schema for an user.
  *
  * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
  */
@@ -106,7 +110,7 @@ const userSchema    = Joi.object().keys({
     email           : Joi.string().email().required(),
     password        : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     isAdmin         : Joi.bool().required(),
-    type            : Joi.bool().required(),
+    isPro           : Joi.bool().required(),
 });
 
 /**
@@ -133,11 +137,9 @@ const articleSchema    = Joi.object().keys({
     description     : Joi.string().required(),
     price           : Joi.number().required(),
     isRequest       : Joi.bool().required(),
-    first_image     : Joi.string().required(),
+    image           : Joi.string().required(),
     localisation    : Joi.string().required(),
-    images          : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-    user            : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-    field           : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
+    user            : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required()
 });
 
 /**
@@ -150,105 +152,10 @@ const partialArticleSchema = Joi.object().keys({
     description     : Joi.string(),
     price           : Joi.number(),
     isRequest       : Joi.bool(),
-    first_image     : Joi.string(),
-    localisation    : Joi.string(),
-    images          : Joi.array(),
-    user            : Joi.array(),
-    field           : Joi.array()
-});
-
-
-/**
- * Validation schema for a category.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const categorySchema= Joi.object().keys({
-    title           : Joi.string().required(),
-    value           : Joi.string().required(),
-    article         : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-    field           : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-});
-
-/**
- * Validation schema for a partial category.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const partialCategorySchema = Joi.object().keys({
-    title           : Joi.string(),
-    value           : Joi.string(),
-    article         : Joi.array(),
-    field           : Joi.array()
-});
-
-/**
- * Validation schema for a category.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const subCategorySchema= Joi.object().keys({
-    title           : Joi.string().required(),
-    value           : Joi.string().required(),
-    article         : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-    field           : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-});
-
-/**
- * Validation schema for a partial category.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const partialSubCategorySchema = Joi.object().keys({
-    title           : Joi.string(),
-    value           : Joi.string(),
-    article         : Joi.array(),
-    field           : Joi.array()
-});
-
-/**
- * Validation schema for a field.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const fieldSchema= Joi.object().keys({
-    title           : Joi.string().required(),
-    value           : Joi.string().required(),
-});
-
-/**
- * Validation schema for a partial field.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const partialFieldSchema = Joi.object().keys({
-    title           : Joi.string(),
-    value           : Joi.string(),
-});
-
-
-
-
-/**
- * Validation schema for an image.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const imageSchema= Joi.object().keys({
-    image           : Joi.string().required(),
-    article         : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required(),
-});
-
-/**
- * Validation schema for a partial image.
- *
- * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
- */
-const partialImageSchema = Joi.object().keys({
     image           : Joi.string(),
-    article         : Joi.array(),
+    localisation    : Joi.string(),
+    user            : Joi.array()
 });
-
 
 module.exports = {
     validateParam,
@@ -256,17 +163,10 @@ module.exports = {
     validateQuery,
     schemas: {
         idSchema,
+        emailSchema,
         userSchema,
         partialUserSchema,
         articleSchema,
-        partialArticleSchema,
-        categorySchema,
-        partialCategorySchema,
-        subCategorySchema,
-        partialSubCategorySchema,
-        fieldSchema,
-        partialFieldSchema,
-        imageSchema,
-        partialImageSchema
+        partialArticleSchema
     }
 };

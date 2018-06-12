@@ -35,16 +35,11 @@ const articleSchema = new Schema({
         type    : String,
         required: true
     },
-    isRequest  : {
-        type    : Boolean,
-        required: true,
-        default : true
-    },
     price       : {
         type    : Number,
         required: true
     },
-    first_image : {
+    image        : {
         type    : String,
         required: true
     },
@@ -57,18 +52,6 @@ const articleSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref : 'user',
             required: true
-        }
-    ],
-    images: [
-        {
-            type: Schema.Types.ObjectId,
-            ref : 'image'
-        }
-    ],
-    fields: [
-        {
-            type: Schema.Types.ObjectId,
-            ref : 'field'
         }
     ]
 }, {

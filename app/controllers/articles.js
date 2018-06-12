@@ -9,7 +9,11 @@ const config            = require("../../config/config");
 
 // TODO create
 const create = (req, res) => {
+    if(req.decoded){
 
+    }else{
+        res.status(204).send('No changes.').end();
+    }
 };
 // TODO find
 const find = (req, res) => {

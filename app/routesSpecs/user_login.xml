@@ -1,0 +1,53 @@
+<RestClientRequest>
+  <option name="biscuits">
+    <list>
+      <Biscuit>
+        <option name="date" value="-1" />
+        <option name="domain" value="localhost" />
+        <option name="name" value="session" />
+        <option name="path" value="/" />
+        <option name="value" value="eyJuYW1lIjoic2Vzc2lvbiIsInZhbHVlIjoiZXlKaGJHY2lPaUpJVXpNNE5DSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmxiV0ZwYkNJNklteGhkWEpsYm5RdWJXRnlkR2x1Wlhvd05rQm5iV0ZwYkM1amIyMGlMQ0p1WVcxbElqb2lhMmxzYjNWdFlYQWlMQ0pwYzBGa2JXbHVJanBtWVd4elpTd2lhV0YwSWpveE5USTNPRE0xTkRBMkxDSmxlSEFpT2pFMU1qYzVNakU0TURaOS52MlY0R29JdFNwQ19ibWNXVTA1NExxbTJ1NEk3VjBGaF9sanhMS25xa05ZRE9mUURLZ3hxVW41UGwyY1RjUUdQIn0=" />
+      </Biscuit>
+      <Biscuit>
+        <option name="date" value="-1" />
+        <option name="domain" value="localhost" />
+        <option name="name" value="session.sig" />
+        <option name="path" value="/" />
+        <option name="value" value="MzsJTJzW43tiddujqcNCK7V65kE" />
+      </Biscuit>
+    </list>
+  </option>
+  <option name="httpMethod" value="POST" />
+  <option name="urlBase" value="http://localhost:3000" />
+  <option name="urlPath" value="/api/user/login" />
+  <option name="headers">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="Accept" />
+        <option name="value" value="*/*" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Cache-Control" />
+        <option name="value" value="no-cache" />
+      </KeyValuePair>
+      <KeyValuePair>
+        <option name="key" value="Content-Type" />
+        <option name="value" value="application/json" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parameters">
+    <list>
+      <KeyValuePair>
+        <option name="key" value="" />
+        <option name="value" value="" />
+      </KeyValuePair>
+    </list>
+  </option>
+  <option name="parametersEnabled" value="false" />
+  <option name="haveTextToSend" value="true" />
+  <option name="haveFileToSend" value="false" />
+  <option name="isFileUpload" value="false" />
+  <option name="textToSend" value="{    &#9;&quot;email&quot;: &quot;laurent.martinez06@gmail.com&quot;,              &quot;password&quot;: &quot;password&quot;  } " />
+  <option name="filesToSend" value="" />
+</RestClientRequest>
