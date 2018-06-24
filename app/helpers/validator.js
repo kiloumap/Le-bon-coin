@@ -133,12 +133,11 @@ const partialUserSchema = Joi.object().keys({
  * @type {Iterator.<number>|Iterator.<K>|Iterator.<T>|Array|Chai.Assertion|*}
  */
 const articleSchema    = Joi.object().keys({
-    title           : Joi.string().required(),
-    description     : Joi.string().required(),
+    title           : Joi.string().alphanum().min(5).max(40).required(),
+    description     : Joi.string().min(10).max(500).required(),
     price           : Joi.number().required(),
-    isRequest       : Joi.bool().required(),
     image           : Joi.string().required(),
-    localisation    : Joi.string().required(),
+    localisation    : Joi.string().regex(/^[0-9]{5,5}$/).min(5).max(5).required(),
     user            : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required()
 });
 
@@ -151,7 +150,6 @@ const partialArticleSchema = Joi.object().keys({
     title           : Joi.string(),
     description     : Joi.string(),
     price           : Joi.number(),
-    isRequest       : Joi.bool(),
     image           : Joi.string(),
     localisation    : Joi.string(),
     user            : Joi.array()

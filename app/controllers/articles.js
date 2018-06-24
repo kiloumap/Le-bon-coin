@@ -4,20 +4,22 @@ const jwt               = require("jsonwebtoken");
 const expressJwt        = require('express-jwt');
 
 const bcrypt            = require('bcryptjs');
-const User              = require('../models/Users');
+const Article           = require('../models/Articles');
 const config            = require("../../config/config");
 
 // TODO create
 const create = (req, res) => {
-    if(req.decoded){
-
-    }else{
-        res.status(204).send('No changes.').end();
-    }
+    const article = new Article(req.value.body);
+    article.users = req.decoded._id;
+    const ret = Article.populate(article.save(), 'users');
+    if(ret) res.status(201).send('Article created');
 };
+
 // TODO find
 const find = (req, res) => {
-
+    const ret = Article.findOne({'title' : 'voiture'});
+    console.log(ret);
+    res.status(201).send(ret);
 };
 
 // TODO update

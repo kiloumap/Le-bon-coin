@@ -40,7 +40,6 @@ const create = (req, res) => {
             isPro       : req.body.isPro
         },  function (err) {
                 if (err) {
-                    console.log(err);
                     if (err.code === 11000)
                         return res.status(200).send("User's mail already exists, you will be redirect to login."); // TODO redirect to login
                     else
@@ -48,7 +47,7 @@ const create = (req, res) => {
                 }
                 const token = setToken(req.body);
                 req.session = { name: "session", value: token };
-                res.status(200).send({ token: token, isAuth: true });
+                res.status(201).send({ token: token, isAuth: true });
         });
     }else return res.status(204).end();
 };
