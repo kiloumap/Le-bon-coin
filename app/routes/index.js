@@ -1,6 +1,5 @@
 'use strict';
 
-// TODO create check doc generate
 const express                   = require("express");
 const UserRouter                = require('./Users');
 const ArticleRouter             = require('./Articles');

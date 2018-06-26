@@ -1,5 +1,4 @@
 'use strict';
-// TODO DOC
 const UserController        = require('../controllers/users');
 const express               = require('express');
 const verifyToken           = require('../helpers/token');

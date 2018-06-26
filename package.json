@@ -20,6 +20,7 @@
     "express-jwt": "^5.3.1",
     "express-promise-router": "^3.0.2",
     "joi": "^13.2.0",
+    "jsdoc": "^3.5.5",
     "jsonwebtoken": "^8.2.1",
     "method-override": "~2.3.10",
     "mocha": "^5.1.1",

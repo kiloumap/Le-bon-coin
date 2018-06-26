@@ -25,7 +25,7 @@ const config            = require("../../config/config");
  * @param {string} req.query.isAdmin - User's admin to query.
  * @param {string} req.query.isPro - User's type to query.
  * @param {Object} res - Response object.
- * @returns {Object} return res.status() with a status code to say what happens and res.json() to send data if there is any.
+ * @returns {Promise.<void>} return res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
 const create = (req, res) => {
     if(req.body){
@@ -62,7 +62,7 @@ const create = (req, res) => {
  * @param {string} req.query.email - User's email to query.
  * @param {string} req.query.token - User's token to query.
  * @param {Object} res - Response object.
- * @returns {Object} return res.status() with a status code to say what happens and res.json() to send data if there is any.
+ * @returns {Promise.<void>} return res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
 const find = (req, res) => {
     jwt.verify(req.session.value, config.secret,function(err,user){
@@ -86,7 +86,19 @@ const find = (req, res) => {
     });
 };
 
-// TODO update check doc generate
+/**
+ *
+ * Update an user
+ *
+ * @function update
+ * @memberof UsersController
+ * @param {Object} req - Request object.
+ * @param {string} req.query.email - User's email to query.
+ * @param {string} req.query.token - User's token to query.
+ * @param {Partial<User>} req.body - New values.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} return res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const update = (req, res) => {
     if(req.body && req.decoded.email){
         const values = req.body;
@@ -108,7 +120,19 @@ const update = (req, res) => {
         res.status(204).send('No changes.').end();
 };
 
-// TODO remove check doc generate
+/**
+ *
+ * Remove an user
+ *
+ * @function remove
+ * @memberof UsersController
+ * @param {Object} req - Request object.
+ * @param {string} req.query.email - User's email to query.
+ * @param {string} req.query.token - User's token to query.
+ * @param {Partial<User>} req.body - New values.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} return res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const remove = (req, res) => {
     if(req.decoded.email){
         User.deleteOne({email: req.decoded.email}, function(err, user){
@@ -122,6 +146,15 @@ const remove = (req, res) => {
         res.status(204).send('No changes.').end();
 };
 
+/**
+ *
+ * Set a token
+ *
+ * @function setToken
+ * @memberof UsersController
+ * @param {Object} user - User's datas
+ * @returns {Object.token} return user's encrypted token.
+ */
 const setToken = (user) => {
     return jwt.sign({ _id: user._id, email: user.email, name: user.name, isAdmin: user.isAdmin
     }, config.secret, {

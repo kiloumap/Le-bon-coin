@@ -20,7 +20,6 @@ const app               = express();
 const server = require('http').Server(app);
 const io     = require('socket.io')(server);
 
-// TODO check doc generate
 // ******************* configuration *******************
 // Connection to mongodb.
 mongoose.connect(config.database, (err) => {
@@ -44,11 +43,9 @@ app.use(cookieSession({
         signed: true,
         secure: true,
     }
-
 }));
 
 // ******************* routes *******************
-// TODO link to generate doc
 app.use('/api', indexRouter);
 
 // Catch 404 Errors and forward them to error handler.

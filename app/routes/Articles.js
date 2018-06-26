@@ -1,5 +1,4 @@
 'use strict';
-// TODO DOC
 const ArticleController         = require('../controllers/articles');
 const express                   = require('express');
 const verifyToken               = require('../helpers/token');
@@ -22,10 +21,9 @@ apiRouter.route('/')
 apiRouter.route('/:title')
     .get(validateParam(schemas.partialArticleSchema, 'title'), ArticleController.findByTitle);
 
-// #TODO doc
 // route to  (POST http://localhost:3000/api/article)
-apiRouter.route('/:id')
-    .delete(validateBody(schemas.partialArticleSchema), verifyToken, ArticleController.remove)
-    .patch(validateParam(schemas.partialArticleSchema, 'id'), verifyToken, ArticleController.update)
+apiRouter.route('/:id') // TODO CHECK TOKEN /!\
+    .delete(validateBody(schemas.partialArticleSchema, 'id'), ArticleController.remove)
+    .patch(validateParam(schemas.idSchema, 'id'), ArticleController.update);
 
 module.exports = apiRouter;

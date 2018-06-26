@@ -1,13 +1,22 @@
 'use strict';
 
-const jwt               = require("jsonwebtoken");
-const expressJwt        = require('express-jwt');
-
-const bcrypt            = require('bcryptjs');
 const Article           = require('../models/Articles');
-const config            = require("../../config/config");
 
-// TODO create
+/**
+ * Articles' controller.
+ * @namespace ArticlesController
+ */
+
+/**
+ * Create a article.
+ *
+ * @function article
+ * @memberof ArticlesController
+ * @param {Object} req - Request object.
+ * @param {Article} req.body - Article's object to create.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const create = (req, res) => {
     const article = new Article(req.value.body);
     article.users = req.decoded._id;
@@ -16,7 +25,21 @@ const create = (req, res) => {
     else res.status(500).send('Error');
 };
 
-// TODO findTitle
+/**
+ * Find an articles responding to the query by his id.
+ *
+ * @function find
+ * @memberof ArticlesController
+ * @param {Object} req - Request object.
+ * @param {string} req.params.id - Article's ID to find.
+ * @param {string} req.query.title - Article's name to query.
+ * @param {string} req.query.description - Article's description to query.
+ * @param {string} req.query.price - Article's price to query.
+ * @param {string} req.query.image - Article's image to query.
+ * @param {string} req.query.localisation - Article's localisation to query.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const findByTitle = (req, res) => {
     Article.findOne({title : req.value.params.title}, null)
         .populate('user')
@@ -24,12 +47,26 @@ const findByTitle = (req, res) => {
             if(err){
                 res.send(err);
             } else {
-                res.send(201).json(article);
+                res.status(201).json(article);
             }
         })
 };
 
-// TODO find
+/**
+ * Find all articles responding to the query or one by his id.
+ *
+ * @function find
+ * @memberof ArticlesController
+ * @param {Object} req - Request object.
+ * @param {string} req.params.id - Article's ID to find.
+ * @param {string} req.query.title - Article's name to query.
+ * @param {string} req.query.description - Article's description to query.
+ * @param {string} req.query.price - Article's price to query.
+ * @param {string} req.query.image - Article's image to query.
+ * @param {string} req.query.localisation - Article's localisation to query.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const find = (req, res) => {
     Article.find()
         .populate('user')
@@ -42,24 +79,50 @@ const find = (req, res) => {
         })
 };
 
-// TODO doc
+/**
+ * Update an article.
+ *
+ * @function update
+ * @memberof ArticlesController
+ * @param {Object} req - Request object.
+ * @param {string} req.params.id - Article's ID to update.
+ * @param {Partial<Article>} req.body - New values.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const update = (req, res) => {
-    const { id } = req.value.params;
-    const values = req.value.body;
-    Article.findByIdAndUpdate(id, values, { new: true })
+    Article.findByIdAndUpdate(req.value.params.id, req.body, { new: true })
     .populate('ingredients')
     .exec((err, article) => {
         if(err)
-            res.send(err);
+            res.status(404).send('article not found');
         else
-            res.status(201).json(article);
+            res.status(201).send(article);
     });
 };
 
-// TODO remove
+/**
+ * Remove a article.
+ *
+ * @function remove
+ * @memberof ArticlesController
+ * @param {Object} req - Request object.
+ * @param {string} req.params.id - Article's ID to update.
+ * @param {Partial<Article>} req.body - New values.
+ * @param {Object} res - Response object.
+ * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
+ */
 const remove = (req, res) => {
-
+    const article = Article.findById({_id: req.params.id});
+    const ret = Article.populate(article.remove(), 'user');
+    if (ret) {
+        res.status(200).json('article removed');
+        //global.io.emit('[Pizza] Removed', ret);
+    } else {
+        res.status(204).end();
+    }
 };
+
 module.exports = {
     create,
     find,

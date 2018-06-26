@@ -1,7 +1,6 @@
 const jwt               = require('jsonwebtoken');
 const config            = require("../../config/config");
 
-// TODO set user decode in global var
 module.exports = function(req,res,next) {
     let token = req.session.value || req.headers['x-access-token'];
     if (token) {
