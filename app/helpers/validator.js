@@ -13,22 +13,17 @@ function validateParam(schema, name) {
     return (req, res, next) => {
         const result = Joi.validate({ param: req.params[name] }, schema);
 
-        if (result.error) {
-            return res.status(400).json(result.error);
-        } else {
             if (!req.value) {
                 req.value = {};
-            }
 
+            }
             if (!req.value.params) {
                 req.value.params = {};
             }
-
             req.value.params[name] = result.value.param;
 
             next();
-        }
-    };
+        };
 }
 
 /**
@@ -110,7 +105,7 @@ const userSchema    = Joi.object().keys({
     email           : Joi.string().email().required(),
     password        : Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
     isAdmin         : Joi.bool().required(),
-    isPro           : Joi.bool().required(),
+    isPro           : Joi.bool().required(), // TODO check if necessary
 });
 
 /**
@@ -138,7 +133,7 @@ const articleSchema    = Joi.object().keys({
     price           : Joi.number().required(),
     image           : Joi.string().required(),
     localisation    : Joi.string().regex(/^[0-9]{5,5}$/).min(5).max(5).required(),
-    user            : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/)).required()
+    user            : Joi.array().items(Joi.string().regex(/^[0-9a-fA-F]{24}$/))
 });
 
 /**

@@ -82,7 +82,7 @@ const find = (req, res) => {
                 });
             }else res.status(500).end();
             // Else send token and auth user
-        }else return res.status(200).send({ user: req.decoded, isAuth: true });
+        }else res.status(200).send({ user: req.decoded, isAuth: true });
     });
 };
 

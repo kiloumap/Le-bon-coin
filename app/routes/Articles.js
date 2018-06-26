@@ -17,12 +17,15 @@ const apiRouter             = express.Router();
 
 apiRouter.route('/')
     .post(validateBody(schemas.articleSchema), verifyToken, ArticleController.create)
-    .get(validateBody(schemas.partialArticleSchema), ArticleController.find);
+    .get(ArticleController.find);
+
+apiRouter.route('/:title')
+    .get(validateParam(schemas.partialArticleSchema, 'title'), ArticleController.findByTitle);
+
 // #TODO doc
 // route to  (POST http://localhost:3000/api/article)
 apiRouter.route('/:id')
     .delete(validateBody(schemas.partialArticleSchema), verifyToken, ArticleController.remove)
-    .patch(validateBody(schemas.partialArticleSchema), verifyToken, ArticleController.update)
-    .get(validateBody(schemas.partialArticleSchema), ArticleController.find);
+    .patch(validateParam(schemas.partialArticleSchema, 'id'), verifyToken, ArticleController.update)
 
 module.exports = apiRouter;
