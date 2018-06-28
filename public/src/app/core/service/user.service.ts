@@ -5,7 +5,7 @@ import { SocketService }  from './socket.service';
 import { Observable }     from "rxjs/internal/Observable";
 
 @Injectable()
-export class ArticleService {
+export class UserService {
   private url = 'http://localhost:3000/user';
 
   articleCreated$: Observable<User>;

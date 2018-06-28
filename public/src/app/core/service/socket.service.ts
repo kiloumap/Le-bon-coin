@@ -5,9 +5,10 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class SocketService {
 
-  private socket: io.Socket;
+  private socket = io.Socket;
 
   constructor() {
+
     this.socket = io.connect('http://localhost:3000/');
   }
 

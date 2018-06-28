@@ -1,25 +1,30 @@
 import { NgModule }                   from '@angular/core';
-import { RouterModule }               from '@angular/router';
-import {  ArticleHomeComponent  }     from "./article-home/article-home.component";
+import { Routes, RouterModule }       from '@angular/router';
+import { ArticleHomeComponent}        from "./article/article-home/article-home.component";
+import {ArticleRoutingModule}         from "./article/article-routing.module";
+import {ArticleDetailsComponent}      from "./article/article-details/article-details.component";
+import {CommonModule} from "@angular/common";
 
-const modulesLocation = 'apps/bobbyzzaiolo-ngrx/src/app';
+
+const routes: Routes = [
+  {
+    path: '',
+    component: ArticleHomeComponent
+  },
+  {
+    path: 'user',
+    loadChildren: './user/user.module#UserModule'
+  },
+  {
+    path: 'article',
+    component: ArticleDetailsComponent
+  }
+];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot([
-      {
-        path: '',
-        component: ArticleHomeComponent
-      },
-      {
-        path: 'user',
-        loadChildren: `${modulesLocation}/admin/admin.module#AdminModule`
-      },
-      {
-        path: 'article',
-        loadChildren: `${modulesLocation}/pizzas/pizzas.module#PizzasModule`
-      }
-    ])
+    CommonModule,
+    RouterModule.forRoot(routes)
   ],
   exports: [RouterModule]
 })
