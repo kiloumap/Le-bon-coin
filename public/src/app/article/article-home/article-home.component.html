@@ -1,3 +1,18 @@
-<p>
-  article-home works!
-</p>
+<div *ngFor="let article of articles" class="article col-md-12">
+  <div class="seemore" routerLink="/article/{{article.title}}">
+    <div class="row">
+      <div class="col-md-4">{{ article.title}}</div>
+      <div class="col-md-4">{{ article.updatedAt | date: 'dd/MM/yyyy à HH:mm'}}</div>
+      <div class="col-md-4">Département : {{ article.localisation}}</div>
+    </div>
+    <img [src]="article.img" alt="">
+    <div>Description : {{ article.description }} </div>
+    <div *ngFor="let user of article.user" class="row">
+      <div class="col-md-6">Auteur : {{ user.name }}</div>
+      <div class="col-md-6">Localisation : {{ article.localisation }}</div>
+    </div>
+    <div class="seemore">
+      <i class="fas fa-search-plus"></i>
+    </div>
+  </div>
+</div>

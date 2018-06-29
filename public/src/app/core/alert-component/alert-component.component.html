@@ -1,0 +1,5 @@
+<div class="alert-container">
+  <div class="alert" [class]="alert.severity" role="alert" *ngFor="let alert of alerts">
+    <strong>Attention !</strong> {{ alert.message }}
+  </div>
+</div>

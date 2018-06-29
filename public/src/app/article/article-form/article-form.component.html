@@ -1,0 +1,52 @@
+<h1 *ngIf="!this.pizza?._id">Modifier une annonce </h1>
+<h1 *ngIf="this.pizza?._id">Créer une annonce </h1>
+
+<form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
+  <section class="form-block">
+    <div class="form-group">
+      <label for="title">Titre</label>
+      <label for="title"
+             class="tooltip tooltip-validation tooltip-sm"
+             [class.invalid]="articleForm.get('description')
+                  && articleForm.status === 'INVALID'
+                  && (articleForm.get('description').dirty
+                  || articleForm.get('description').touched)">
+        <input id="title" type="text"
+               formControlName="title">
+        <h2 class="tooltip-content">*</h2>
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <label for="description"
+             [class.invalid]="articleForm.get('description')
+                  && articleForm.status === 'INVALID'
+                  && (articleForm.get('description').dirty
+                  || articleForm.get('description').touched)">
+        <input id="description" type="text"
+               formControlName="description">
+        <h2 class="tooltip-content">*</h2>
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="image">Image</label>
+      <label for="image">
+        <img [src]="articleImage" alt="">
+        <input id="image"
+               type="file"
+               accept="image/*"
+               (change)="onChangeImage($event)">
+      </label>
+    </div>
+    <button *ngIf="!this.pizza?._id"
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="articleForm.status === 'INVALID'">Ajouter
+    </button>
+    <button *ngIf="this.pizza?._id"
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="articleForm.status === 'INVALID'">Modifier
+    </button>
+  </section>
+</form>

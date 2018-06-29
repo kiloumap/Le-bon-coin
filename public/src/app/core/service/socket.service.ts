@@ -10,6 +10,7 @@ export class SocketService {
   constructor() {
 
     this.socket = io.connect('http://localhost:3000/');
+    //console.log(socket);
   }
 
   listen(event: string): Observable<any> {

@@ -6,25 +6,25 @@ import { Observable }     from "rxjs/internal/Observable";
 
 @Injectable()
 export class ArticleService {
-  private url = 'http://localhost:3000/article';
+  private url = 'http://localhost:3000/api/article';
 
-  articleCreated$: Observable<Article>;
-  articleUpdated$: Observable<Article>;
-  articleRemoved$: Observable<Article>;
+  articleCreated: Observable<Article>;
+  articleUpdated: Observable<Article>;
+  articleRemoved: Observable<Article>;
 
   constructor(private http: HttpClient,
               private socketService: SocketService) {
-    this.articleCreated$ = this.socketService.listen('Article Created');
-    this.articleUpdated$ = this.socketService.listen('Article Updated');
-    this.articleRemoved$ = this.socketService.listen('Article Removed');
+    this.articleCreated = this.socketService.listen('Article Created');
+    this.articleUpdated = this.socketService.listen('ArticleSaved');
+    this.articleRemoved = this.socketService.listen('Article Removed');
   }
 
   getAll(): Observable<Article[]> {
     return this.http.get<Article[]>(this.url);
   }
 
-  get(id: string): Observable<Article> {
-    return this.http.get<Article>(`${this.url}/${id}`);
+  get(title: string): Observable<Article> {
+    return this.http.get<Article>(`${this.url}/${title}`);
   }
 
   post(article: Article): Observable<Article> {
@@ -32,10 +32,10 @@ export class ArticleService {
   }
 
   patch(id: string, article: Partial<Article>): Observable<Article> {
-    return this.http.patch<Article>(`${this.url}/${id}`, article);
+    return this.http.patch<Article>('${this.url}/${id}', article);
   }
 
   delete(id: string): Observable<Article> {
-    return this.http.delete<Article>(`${this.url}/${id}`);
+    return this.http.delete<Article>('${this.url}/${id}');
   }
 }

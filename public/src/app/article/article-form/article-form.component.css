@@ -1,0 +1,16 @@
+input, select, textarea{
+  color: #ff0000;
+}
+
+body{
+  color: green;
+}
+
+img {
+  width: 100px;
+  display: block;
+}
+
+.form-group {
+  display: block;
+}
