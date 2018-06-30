@@ -1,0 +1,9 @@
+{{authentChecker}}
+
+<nav class="nav justify-content-center">
+  <a class="nav-link" [routerLink]="['/']"       routerLinkActive="active">Annonces</a>
+  <a class="nav-link" [routerLink]="['/create']" routerLinkActive="active">Créer une annonce</a>
+  <a class="nav-link" [routerLink]="['/login']" routerLinkActive="active" *ngIf="!authentChecker?.isAuth">Se connecter</a>
+  <a class="nav-link" [routerLink]="['/compte']" routerLinkActive="active" *ngIf="authentChecker?.isAuth">Mes annonces</a>
+  <a class="nav-link" [routerLink]="['/create']" routerLinkActive="active" *ngIf="authentChecker?.isAuth">Gestion de compte</a>
+</nav>

@@ -12,13 +12,15 @@ export class ArticleDetailsComponent implements OnInit {
   constructor(private route: ActivatedRoute, private articleService: ArticleService ) {}
 
   article: any;
-
+  user: any;
   ngOnInit(): void {
     const title = this.route.snapshot.paramMap.get('title');
-    if (title)
+    if (title){
       this.articleService.get(title).subscribe(res =>{
         this.article = res;
       });
+      this.article.image = atob(this.article.image);
+    }
 
 
 

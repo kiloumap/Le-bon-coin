@@ -8,15 +8,15 @@ import { Observable }     from "rxjs/internal/Observable";
 export class ArticleService {
   private url = 'http://localhost:3000/api/article';
 
-  articleCreated: Observable<Article>;
-  articleUpdated: Observable<Article>;
-  articleRemoved: Observable<Article>;
+  ArticleCreated: Observable<Article>;
+  ArticleSaved: Observable<Article>;
+  ArticleDeleted: Observable<Article>;
 
   constructor(private http: HttpClient,
               private socketService: SocketService) {
-    this.articleCreated = this.socketService.listen('Article Created');
-    this.articleUpdated = this.socketService.listen('ArticleSaved');
-    this.articleRemoved = this.socketService.listen('Article Removed');
+    this.ArticleCreated = this.socketService.listen('ArticleCreated');
+    this.ArticleSaved   = this.socketService.listen('ArticleSaved');
+    this.ArticleDeleted = this.socketService.listen('ArticleDeleted');
   }
 
   getAll(): Observable<Article[]> {

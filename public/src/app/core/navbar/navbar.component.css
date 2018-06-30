@@ -1,0 +1,29 @@
+.nav {
+  background-color: #0b0b0b;
+}
+
+.nav > a {
+  color: green;
+  padding: 10px 10px 10px 10px;
+  border-right: green solid 1px;
+  border-left: green solid 1px;
+}
+
+.nav > a:active{
+  color: green;
+}
+
+.nav > a:visited{
+  color: green;
+}
+
+.nav > a:hover {
+  color: darkgreen;
+}
+
+a{
+  color: green;
+}
+a{
+  cursor: pointer;
+}

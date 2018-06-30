@@ -1,7 +1,7 @@
 'use strict';
 
 const Article           = require('../models/Articles');
-
+const ServerEvent       = require('./socket');
 /**
  * Articles' controller.
  * @namespace ArticlesController
@@ -91,14 +91,16 @@ const find = (req, res) => {
  * @returns {Promise.<void>} Call res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
 const update = (req, res) => {
-    Article.findByIdAndUpdate(req.value.params.id, req.body, { new: true })
-    .populate('ingredients')
-    .exec((err, article) => {
-        if(err)
-            res.status(404).send('article not found');
-        else
-            res.status(201).send(article);
-    });
+    Article.findByIdAndUpdate({_id: req.value.params.id} , req.body, { new: true },
+        function (err, article){
+            if(err)
+                res.status(404).send('article not found');
+            else{
+                res.status(201).json('ArticleSaved');
+                global.io.emit('ArticleSaved', article);
+            }
+        });
+
 };
 
 /**
@@ -116,12 +118,29 @@ const remove = (req, res) => {
     const article = Article.findById({_id: req.params.id});
     const ret = Article.populate(article.remove(), 'user');
     if (ret) {
-        res.status(200).json('article removed');
-        //global.io.emit('[Pizza] Removed', ret);
+        res.status(200).json('ArticleDeleted');
+        global.io.emit('ArticleDeleted', ret);
     } else {
         res.status(204).end();
     }
 };
+
+// Broadcast ArticleSaved for all users
+ServerEvent.on('ArticleSaved', (data) => {
+    io.sockets.emit('ArticleSaved', data);
+});
+
+// Broadcast ArticleCreated for all users
+ServerEvent.on('ArticleCreated', (data) => {
+    io.sockets.emit('ArticleCreated', data);
+});
+
+// Broadcast ArticleDeleted for all users
+ServerEvent.on('ArticleDeleted', (data) => {
+    io.sockets.emit('ArticleDeleted', data);
+});
+
+
 
 module.exports = {
     create,

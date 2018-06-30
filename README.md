@@ -32,19 +32,13 @@ npm install
         ----- config.js   
     - node_modules              <!-- created by npm install -->
     - public                    <!-- all frontend and angular stuff -->
-    ----- css
-    ----- js
-    ---------- controllers      <!-- angular controllers -->
-    ---------- services         <!-- angular services -->
-    ---------- app.js           <!-- angular application -->
-    ---------- appRoutes.js     <!-- angular routes -->
-    ----- img
-    ----- libs                  <!-- created by bower install -->
-    ----- views
-    ---------- home.html
-    ---------- nerd.html
-    ---------- geek.html
+    ----- src
     ----- index.html
+    ---------- app.js           <!-- angular application -->
+    --------------- routing.module.js     <!-- angular routes -->
+    --------------- article      <!-- article files -->
+    --------------- user         <!-- user files -->
+    --------------- model     
     - .gitignore                <!-- ignored files by git -->
     - mongod                    <!-- shortcut to setup database -->
     - mongodRepair              <!-- shortcut to repair database -->
@@ -67,7 +61,7 @@ sudo ./mongod
 ````
 
  
-### Run server
+### Run node server
 
 A simple command to set DEV-env & run server.
 
@@ -75,10 +69,17 @@ A simple command to set DEV-env & run server.
 npm start
 ```
 
+### Start angular
+
+A simple command to set DEV-env & run server.
+
+```
+cd public && npm i && ng serve
+```
 
 ## Demo
 
-For demo, you can visit this [link](5.196.66.106/leboncoin).
+For demo, you can visit this [link](http/localhost:4200).
 
 ## Versioning
 

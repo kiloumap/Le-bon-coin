@@ -32,3 +32,5 @@
 }
 
 .details:focus {outline:0;}
+.edit:focus {outline:0;}
+.trash:focus {outline:0;}

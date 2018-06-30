@@ -65,6 +65,7 @@ const create = (req, res) => {
  * @returns {Promise.<void>} return res.status() with a status code to say what happens and res.json() to send data if there is any.
  */
 const find = (req, res) => {
+    console.log(req.body);
     jwt.verify(req.session.value, config.secret,function(err,user){
         // if err we try to create a new token if user exists.
         if(err){
@@ -74,15 +75,16 @@ const find = (req, res) => {
                     if (!user) return res.status(404).send('No user found.'); // If user doesn't exist
                     const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
                     if (!passwordIsValid) return res.status(401).send({ auth: false, message: 'Failed to authenticate token.' });
+                    const token = setToken(user);
                     req.session = {
                         name: "session",
-                        value: setToken(user)
+                        value: token
                     };
-                    return res.status(200).send({ user: req.decoded, isAuth: true });
+                    return res.status(200).send({ token });
                 });
             }else res.status(500).end();
             // Else send token and auth user
-        }else res.status(200).send({ user: req.decoded, isAuth: true });
+        }else res.status(200).send(setToken(user));
     });
 };
 

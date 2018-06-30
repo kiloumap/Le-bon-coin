@@ -37,3 +37,9 @@
 }
 
 .seemore:focus {outline:0;}
+.desc {
+  text-align: left;
+  border-top: 1px green solid;
+  border-bottom: 1px green solid;
+  padding: 20px 20px 20px 20px;
+}

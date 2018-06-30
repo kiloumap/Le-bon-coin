@@ -12,8 +12,8 @@
       <div class="col-md-6">Localisation : {{ article.localisation }}</div>
     </div>
     <div class="row">
-      <div class="offset-md-4 col-md-2"><i class="ico fas fa-edit"></i></div>
-      <div class="col-md-2"><i class="ico far fa-trash-alt"></i></div>
+      <div class="offset-md-4 col-md-2 edit" routerLink="../../article/edit/{{article.title}}"><i class="ico fas fa-edit"></i></div>
+      <div class="col-md-2 trash" ><i class="ico far fa-trash-alt"></i></div>
     </div>
   </div>
 </div>

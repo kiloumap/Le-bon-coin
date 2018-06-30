@@ -1,35 +1,60 @@
-<h1 *ngIf="!this.pizza?._id">Modifier une annonce </h1>
-<h1 *ngIf="this.pizza?._id">Créer une annonce </h1>
+<h1 *ngIf="!this.article?.title">Modifier une annonce </h1>
+<h1 *ngIf="this.article?.title">Créer une annonce </h1>
 
 <form [formGroup]="articleForm" (ngSubmit)="onSubmit()">
   <section class="form-block">
     <div class="form-group">
-      <label for="title">Titre</label>
+      <label class="col-md-2  " for="title">Titre * </label>
       <label for="title"
-             class="tooltip tooltip-validation tooltip-sm"
-             [class.invalid]="articleForm.get('description')
+             [class.invalid]="articleForm.get('title')
                   && articleForm.status === 'INVALID'
-                  && (articleForm.get('description').dirty
-                  || articleForm.get('description').touched)">
+                  && (articleForm.get('title').dirty
+                  || articleForm.get('title').touched)">
         <input id="title" type="text"
+               value="{{initialArticle.title}}"
                formControlName="title">
-        <h2 class="tooltip-content">*</h2>
+
       </label>
     </div>
     <div class="form-group">
-      <label for="description">Description</label>
+      <label class="col-md-2" for="description">Description * </label>
       <label for="description"
              [class.invalid]="articleForm.get('description')
                   && articleForm.status === 'INVALID'
                   && (articleForm.get('description').dirty
                   || articleForm.get('description').touched)">
         <input id="description" type="text"
+               value="{{initialArticle.description}}"
                formControlName="description">
-        <h2 class="tooltip-content">*</h2>
       </label>
     </div>
     <div class="form-group">
-      <label for="image">Image</label>
+      <label class="col-md-2" for="localisation">Code postal * </label>
+      <label for="localisation"
+             [class.invalid]="articleForm.get('localisation')
+                  && articleForm.status === 'INVALID'
+                  && (articleForm.get('localisation').dirty
+                  || articleForm.get('localisation').touched)">
+        <input id="localisation" type="text"
+               value="{{initialArticle.localisation}}"
+               formControlName="localisation">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2" for="price">Prix * </label>
+      <label for="price"
+             [class.invalid]="articleForm.get('prix')
+                  && articleForm.status === 'INVALID'
+                  && (articleForm.get('prix').dirty
+                  || articleForm.get('prix').touched)">
+        <input id="price" type="text"
+               value="{{initialArticle.price}}"
+               pattern="^[a-z0-9_-]{8,15}$"
+               formControlName="price">
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="col-md-2" for="image">Image : </label>
       <label for="image">
         <img [src]="articleImage" alt="">
         <input id="image"
@@ -38,15 +63,15 @@
                (change)="onChangeImage($event)">
       </label>
     </div>
-    <button *ngIf="!this.pizza?._id"
+    <button *ngIf="!initialArticle"
             class="btn btn-primary"
             type="submit"
-            [disabled]="articleForm.status === 'INVALID'">Ajouter
+            [disabled]="articleForm.invalid">Ajouter
     </button>
-    <button *ngIf="this.pizza?._id"
+    <button *ngIf="initialArticle"
             class="btn btn-primary"
             type="submit"
-            [disabled]="articleForm.status === 'INVALID'">Modifier
+            [disabled]="articleForm.invalid">Modifier
     </button>
   </section>
 </form>

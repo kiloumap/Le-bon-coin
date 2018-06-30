@@ -1,3 +1,37 @@
-<p>
-  user-login works!
-</p>
+<h1>Se connecter </h1>
+
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <section class="form-block">
+    <div class="form-group">
+      <label class="col-md-3  " for="email">Email * </label>
+      <label for="email"
+             [class.invalid]="userForm.get('email')
+                  && userForm.status === 'INVALID'
+                  && (userForm.get('email').dirty
+                  || userForm.get('email').touched)">
+        <input id="email" type="text"
+               formControlName="email">
+
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3" for="password">Mot de passe * </label>
+      <label for="password"
+             [class.invalid]="userForm.get('password')
+                  && userForm.status === 'INVALID'
+                  && (userForm.get('password').dirty
+                  || userForm.get('password').touched)">
+        <input id="password" type="text"
+               formControlName="password">
+      </label>
+    </div>
+    <button class="btn btn-primary offset-md-1 col-md-2"
+            type="submit"
+            [disabled]="userForm.status === 'INVALID'">Se connecter
+    </button>
+    <button class="btn btn-primary  offset-md-1 col-md-2"
+            type="create"
+            [disabled]="userForm.status === 'INVALID'">Crééer un compte
+    </button>
+  </section>
+</form>

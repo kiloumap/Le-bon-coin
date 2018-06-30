@@ -6,10 +6,11 @@
       <div class="col-md-4">Département : {{ article.localisation}}</div>
     </div>
     <img [src]="article.img" alt="">
-    <div>Description : {{ article.description }} </div>
+    <div class="desc">Description : {{ article.description }} </div>
     <div *ngFor="let user of article.user" class="row">
-      <div class="col-md-6">Auteur : {{ user.name }}</div>
-      <div class="col-md-6">Localisation : {{ article.localisation }}</div>
+      <div class="col-md-4">Auteur : {{ user.name }}</div>
+      <div class="col-md-4">Localisation : {{ article.localisation }}</div>
+      <div class="col-md-4">Prix : {{ article.price }} €</div>
     </div>
     <div class="seemore">
       <i class="fas fa-search-plus"></i>

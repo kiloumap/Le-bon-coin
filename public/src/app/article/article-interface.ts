@@ -3,7 +3,7 @@ export interface Article {
   title: string;
   description: string;
   localisation: number;
-  price: string;
+  price: number;
   image: string;
   user: any[];
   createdAt?: Date;

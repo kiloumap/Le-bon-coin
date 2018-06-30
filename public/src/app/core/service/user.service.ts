@@ -1,22 +1,15 @@
 import { Injectable }     from '@angular/core';
 import { HttpClient }     from '@angular/common/http';
 import { User }           from "../../model/user.model";
-import { SocketService }  from './socket.service';
 import { Observable }     from "rxjs/internal/Observable";
+import {Router} from "@angular/router";
+import {CookieService} from "ngx-cookie-service";
 
 @Injectable()
 export class UserService {
-  private url = 'http://localhost:3000/user';
+  private url = 'http://localhost:3000/api/user';
 
-  articleCreated$: Observable<User>;
-  articleUpdated$: Observable<User>;
-  articleRemoved$: Observable<User>;
-
-  constructor(private http: HttpClient,
-              private socketService: SocketService) {
-    this.articleCreated$ = this.socketService.listen('User Created');
-    this.articleUpdated$ = this.socketService.listen('User Updated');
-    this.articleRemoved$ = this.socketService.listen('User Removed');
+  constructor(private http: HttpClient, private router: Router,private cookieService: CookieService ) {
   }
 
   getAll(): Observable<User[]> {
@@ -27,8 +20,19 @@ export class UserService {
     return this.http.get<User>(`${this.url}/${id}`);
   }
 
-  post(user: User): Observable<User> {
-    return this.http.post<User>(this.url, user);
+  post(user: any): Observable<User> {
+    if(typeof User === user)
+      return this.http.post<User>(this.url, user);
+    else{
+      return this.http.post<String>(this.url+'/login',
+        { email: user.email,
+          password: user.password}).subscribe(
+        response => {
+          const token = response.token;
+          this.cookieService.set( 'session', token );
+          this.router.navigate(['/']);
+        });
+    }
   }
 
   patch(id: string, user: Partial<User>): Observable<User> {

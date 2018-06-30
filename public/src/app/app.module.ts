@@ -6,7 +6,6 @@ import {ArticleHomeComponent} from "./article/article-home/article-home.componen
 import {ArticleDetailsComponent} from "./article/article-details/article-details.component";
 import {UserDashboardComponent} from "./user/user-dashboard/user-dashboard.component";
 import {UserLoginComponent} from "./user/user-login/user-login.component";
-import {UserRegisterComponent} from "./user/user-register/user-register.component";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "./routing.module";
 import {UserService} from "./core/service/user.service";
@@ -14,15 +13,17 @@ import {ArticleService} from "./core/service/article.service";
 import {SocketService} from "./core/service/socket.service";
 import {ArticleFormComponent} from "./article/article-form/article-form.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {CookieService} from "ngx-cookie-service";
+import {NavbarComponent} from "./core/navbar/navbar.component";
 
 @NgModule({
   declarations: [
-    UserRegisterComponent,
     UserLoginComponent,
     UserDashboardComponent,
     ArticleDetailsComponent,
     ArticleHomeComponent,
     ArticleFormComponent,
+    NavbarComponent,
     AppComponent
 
   ],
@@ -33,13 +34,17 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     NgbModule.forRoot(),
     AppRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
   ],
   providers: [
     ArticleService,
     UserService,
     SocketService,
+    CookieService,
+
   ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
+
