@@ -62,3 +62,41 @@ typings/
 .idea
 
 package-lock.json
+
+
+# ionic
+# Specifies intentionally untracked files to ignore when using Git
+# http://git-scm.com/docs/gitignore
+
+*~
+apply/*.sw[mnpcod]
+apply/*.log
+apply/*.tmp
+apply/*.tmp.*
+apply/log.txt
+apply/*.sublime-project
+apply/*.sublime-workspace
+apply/.vscode/
+apply/npm-debug.log*
+
+apply/.idea/
+apply/.sourcemaps/
+apply/.sass-cache/
+apply/.tmp/
+apply/.versions/
+apply/coverage/
+apply/dist/
+apply/node_modules/
+apply/tmp/
+apply/temp/
+apply/hooks/
+apply/platforms/
+apply/plugins/
+apply/plugins/android.json
+apply/plugins/ios.json
+apply/www/
+apply/$RECYCLE.BIN/
+
+.DS_Store
+Thumbs.db
+UserInterfaceState.xcuserstate
