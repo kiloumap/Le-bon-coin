@@ -1,6 +1,7 @@
 # Le bon coin
 
-Remake du bon coin, site de petites annonces de particuliers.
+## Description
+Nothing important. 
 
 ## Getting Started
 
